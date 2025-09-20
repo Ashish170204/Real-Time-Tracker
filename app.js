@@ -13,13 +13,15 @@ app.use(express.static(path.join(__dirname,"public")));
 
 io.on("connection", function(socket){
   socket.on("send-location", function(data){
-    io.emit("receive-location", {id:socket.id, ...data});
+    // data = { latitude, longitude, name }
+    io.emit("receive-location", { id: socket.id, ...data });
   });
+
   socket.on("disconnect", function(){
     io.emit("user-disconnected", socket.id);
   });
-  
 });
+
 
 app.get("/", function(req,res){
   res.render("index");
@@ -29,5 +31,5 @@ app.get("/", function(req,res){
 const PORT = process.env.PORT || 3002;
 
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`server running on address http://localhost:${PORT}`);
 });
